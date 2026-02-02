@@ -8,7 +8,7 @@ using _Project.Develop.Runtime.Utilities.Reactive;
 
 namespace _Project.Develop.Runtime.UI
 {
-    public class IconTextListPresenter
+    public class IconTextListPresenter : IPresenter
     {
         private readonly WalletService _walletService;
         private readonly PlayerProgressTracker _playerProgressTracker;
@@ -32,20 +32,20 @@ namespace _Project.Develop.Runtime.UI
             _iconTextListView = iconTextListView;
         }
 
-        public void Enable()
+        public void Initialize()
         {
             CreateIconTextElement(ViewType.Gold, _walletService.Gold);
             CreateIconTextElement(ViewType.Wins, _playerProgressTracker.Wins);
             CreateIconTextElement(ViewType.Loss, _playerProgressTracker.Losses);
         }
 
-        public void Disable()
+        public void Dispose()
         {
             foreach (var iconTextPresenter in _iconTextPresenters)
             {
                 _iconTextListView.Remove(iconTextPresenter.View);
                 _viewsFactory.Release(iconTextPresenter.View);
-                iconTextPresenter.Disable();
+                iconTextPresenter.Dispose();
             }
 
             _iconTextPresenters.Clear();
@@ -61,7 +61,7 @@ namespace _Project.Develop.Runtime.UI
                 variable,
                 viewType);
 
-            iconTextPresenter.Enable();
+            iconTextPresenter.Initialize();
             _iconTextPresenters.Add(iconTextPresenter);
         }
     }

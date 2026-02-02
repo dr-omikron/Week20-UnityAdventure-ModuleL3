@@ -3,11 +3,10 @@ using _Project.Develop.Runtime.EnumTypes;
 using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.UI.Configs;
 using _Project.Develop.Runtime.Utilities.Reactive;
-using UnityEngine;
 
 namespace _Project.Develop.Runtime.UI
 {
-    public class IconTextPresenter
+    public class IconTextPresenter : IPresenter
     {
         private readonly IReadOnlyVariable<int> _variable;
         private readonly ViewType _viewType;
@@ -26,19 +25,15 @@ namespace _Project.Develop.Runtime.UI
 
         public IconTextView View => _view;
 
-        public void Enable()
+        public void Initialize()
         {
-            Debug.Log(_view == null);
-            Debug.Log(_iconTextViewConfig == null);
-            Debug.Log(_viewType);
-
             UpdateValue(_variable.Value);
             _view.SetIcon(_iconTextViewConfig.GetSpriteFor(_viewType));
 
             _subscription = _variable.Subscribe(OnVariableChanged);
         }
 
-        public void Disable()
+        public void Dispose()
         {
             _subscription.Dispose();
         }

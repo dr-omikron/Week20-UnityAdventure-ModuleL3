@@ -1,10 +1,13 @@
 ﻿using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
+using _Project.Develop.Runtime.UI;
+using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement.DataProviders;
 using _Project.Develop.Runtime.Utilities.Factories;
+using UnityEngine;
 
 namespace _Project.Develop.Runtime.Meta.Infrastructure
 {
@@ -17,6 +20,7 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             container.RegisterAsSingle(CreatePlayerProgressPrinter);
             container.RegisterAsSingle(CreatePlayerProgressRemover);
             container.RegisterAsSingle(CreateMetaCycleFactory);
+            container.RegisterAsSingle(CreateIconTextListPresenter).NonLazy();
         }
 
         private static MainMenuPlayerInputs CreateMainMenuPlayerInputs(DIContainer c) => new MainMenuPlayerInputs();
@@ -54,5 +58,12 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
         }
 
         private static MetaCycleFactory CreateMetaCycleFactory(DIContainer c) => new MetaCycleFactory(c);
+
+        private static IconTextListPresenter CreateIconTextListPresenter(DIContainer c)
+        {
+            IconTextListView iconTextListView = Object.FindObjectOfType<IconTextListView>();
+            IconTextListPresenter iconTextListPresenter = c.Resolve<ProjectPresentersFactory>().CreateIconTextListPresenter(iconTextListView);
+            return iconTextListPresenter;
+        }
     }
 }

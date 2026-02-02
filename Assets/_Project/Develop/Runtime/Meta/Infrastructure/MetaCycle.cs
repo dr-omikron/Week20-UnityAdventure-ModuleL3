@@ -5,21 +5,21 @@ using _Project.Develop.Runtime.Gameplay.Infrastructure;
 using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
-using _Project.Develop.Runtime.Utilities.DataManagement;
 using _Project.Develop.Runtime.Utilities.PlayerInput;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
 using UnityEngine;
 
 namespace _Project.Develop.Runtime.Meta.Infrastructure
 {
-    public class MetaCycle
+    public class MetaCycle : IDisposable
     {
         private readonly SelectGameModeArgsService _selectGameModeArgsService;
         private readonly ConfigsProviderService _configsProviderService;
         private readonly SceneSwitcherService _sceneSwitcherService;
         private readonly ICoroutinesPerformer _coroutinesPerformer;
+        private readonly PlayerProgressPrinter _playerProgressPrinter;
+        private readonly PlayerProgressRemover _playerProgressRemover;
 
-        private readonly List<IDisposable> _disposables;
 
         public MetaCycle(
             SelectGameModeArgsService selectGameModeArgsService, 
@@ -33,15 +33,10 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             _configsProviderService = configsProviderService;
             _sceneSwitcherService = sceneSwitcherService;
             _coroutinesPerformer = coroutinesPerformer;
+            _playerProgressPrinter = playerProgressPrinter;
+            _playerProgressRemover = playerProgressRemover;
 
             _selectGameModeArgsService.GameModeSelected += OnSelectedGameModeArgs;
-
-            _disposables = new List<IDisposable>
-            {
-                _selectGameModeArgsService,
-                playerProgressPrinter,
-                playerProgressRemover
-            };
         }
 
         public void Start()
@@ -58,12 +53,9 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
         private void OnSelectedGameModeArgs(GameplayInputArgs args) 
             => _coroutinesPerformer.StartPerform(_sceneSwitcherService.ProcessSwitchTo(Scenes.Gameplay, args));
 
-        public void Deinitialize()
+        public void Dispose()
         {
             _selectGameModeArgsService.GameModeSelected -= OnSelectedGameModeArgs;
-
-            foreach (var disposable in _disposables)
-                disposable.Dispose();
         }
     }
 }

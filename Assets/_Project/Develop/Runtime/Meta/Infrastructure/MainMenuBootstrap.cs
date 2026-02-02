@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using _Project.Develop.Runtime.Infrastructure;
 using _Project.Develop.Runtime.Infrastructure.DI;
-using _Project.Develop.Runtime.UI;
-using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.Utilities.Factories;
 using _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
@@ -17,8 +15,6 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
         private MainMenuPlayerInputs _mainMenuPlayerInputs;
         private MetaCycle _metaCycle;
 
-        [SerializeField] private IconTextListView _iconTextListView;
-        private ProjectPresentersFactory _projectPresentersFactory;
         private bool _isRun;
 
         public override void ProcessRegistration(DIContainer container, IInputSceneArgs sceneArgs = null)
@@ -36,13 +32,6 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
             MetaCycleFactory factory = _container.Resolve<MetaCycleFactory>();
             _metaCycle = factory.Create();
-
-            _projectPresentersFactory = _container.Resolve<ProjectPresentersFactory>();
-
-            IconTextListPresenter iconTextListPresenter =
-                _projectPresentersFactory.CreateIconTextListPresenter(_iconTextListView);
-
-            iconTextListPresenter.Enable();
 
             yield return null;
         }
@@ -63,7 +52,7 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
         private void OnDestroy()
         {
-            _metaCycle.Deinitialize();
+            _metaCycle.Dispose();
         }
     }
 }

@@ -3,6 +3,7 @@ using _Project.Develop.Runtime.EnumTypes;
 using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.UI.Configs;
 using _Project.Develop.Runtime.Utilities.Reactive;
+using UnityEngine;
 
 namespace _Project.Develop.Runtime.UI
 {
@@ -23,8 +24,14 @@ namespace _Project.Develop.Runtime.UI
             _view = view;
         }
 
+        public IconTextView View => _view;
+
         public void Enable()
         {
+            Debug.Log(_view == null);
+            Debug.Log(_iconTextViewConfig == null);
+            Debug.Log(_viewType);
+
             UpdateValue(_variable.Value);
             _view.SetIcon(_iconTextViewConfig.GetSpriteFor(_viewType));
 

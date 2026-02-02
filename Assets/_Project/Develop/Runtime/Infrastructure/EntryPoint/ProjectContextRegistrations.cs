@@ -1,6 +1,5 @@
 ﻿using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Infrastructure.DI;
-using _Project.Develop.Runtime.Meta.Configs;
 using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
@@ -10,6 +9,7 @@ using _Project.Develop.Runtime.Utilities.DataManagement.DataProviders;
 using _Project.Develop.Runtime.Utilities.DataManagement.DataRepository;
 using _Project.Develop.Runtime.Utilities.DataManagement.KeyStorage;
 using _Project.Develop.Runtime.Utilities.DataManagement.Serializers;
+using _Project.Develop.Runtime.Utilities.Factories;
 using _Project.Develop.Runtime.Utilities.LoadScreen;
 using _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement;
 using _Project.Develop.Runtime.Utilities.Reactive;
@@ -35,6 +35,7 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreatePlayerCurrencyProvider);
             container.RegisterAsSingle(CreatePlayerStatisticProvider);
             container.RegisterAsSingle(CreateSavingFilesCheckService);
+            container.RegisterAsSingle(CreateProjectPresentersFactory);
         }
 
         private static CoroutinesPerformer CreateCoroutinesPerformer(DIContainer c)
@@ -116,5 +117,8 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
 
             return new SaveLoadDataProvidersService(playerCurrencyProvider,  playerStatisticProvider, coroutinesPerformer);
         }
+
+        private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer c)
+            => new ProjectPresentersFactory(c);
     }
 }

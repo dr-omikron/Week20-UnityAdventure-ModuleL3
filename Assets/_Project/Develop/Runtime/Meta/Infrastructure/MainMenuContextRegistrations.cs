@@ -2,7 +2,8 @@
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.UI;
-using _Project.Develop.Runtime.UI.CommonViews;
+using _Project.Develop.Runtime.UI.MainMenu;
+using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement.DataProviders;
@@ -20,7 +21,9 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             container.RegisterAsSingle(CreatePlayerProgressPrinter);
             container.RegisterAsSingle(CreatePlayerProgressRemover);
             container.RegisterAsSingle(CreateMetaCycleFactory);
-            container.RegisterAsSingle(CreateIconTextListPresenter).NonLazy();
+            container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
+            container.RegisterAsSingle(CreateMainMenuPresentersFactory);
+            container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
         }
 
         private static MainMenuPlayerInputs CreateMainMenuPlayerInputs(DIContainer c) => new MainMenuPlayerInputs();
@@ -59,11 +62,31 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
         private static MetaCycleFactory CreateMetaCycleFactory(DIContainer c) => new MetaCycleFactory(c);
 
-        private static IconTextListPresenter CreateIconTextListPresenter(DIContainer c)
+        private static SceneUIRoot CreateSceneUIRoot(DIContainer c)
         {
-            IconTextListView iconTextListView = Object.FindObjectOfType<IconTextListView>();
-            IconTextListPresenter iconTextListPresenter = c.Resolve<ProjectPresentersFactory>().CreateIconTextListPresenter(iconTextListView);
-            return iconTextListPresenter;
+            ResourcesAssetsLoader resourcesAssetsLoader = c.Resolve<ResourcesAssetsLoader>();
+
+            SceneUIRoot sceneUIRootPrefab = 
+                resourcesAssetsLoader.Load<SceneUIRoot>("UI/SceneUIRoot");
+
+            return Object.Instantiate(sceneUIRootPrefab);
+        }
+
+        private static MainMenuPresentersFactory CreateMainMenuPresentersFactory(DIContainer c)
+            => new MainMenuPresentersFactory(c);
+
+        private static MainMenuScreenPresenter CreateMainMenuScreenPresenter(DIContainer c)
+        {
+            SceneUIRoot uiRoot = c.Resolve<SceneUIRoot>();
+
+            MainMenuScreenView view = c
+                .Resolve<ViewsFactory>()
+                .CreateView<MainMenuScreenView>(ViewIDs.MainMenuScreenView, uiRoot.HUDLayer);
+
+            MainMenuScreenPresenter presenter =
+                c.Resolve<MainMenuPresentersFactory>().CreateMainMenuScreenPresenter(view);
+
+            return presenter;
         }
     }
 }

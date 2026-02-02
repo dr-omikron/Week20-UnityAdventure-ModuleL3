@@ -13,7 +13,8 @@ namespace _Project.Develop.Runtime.Utilities.Factories
 
         private readonly Dictionary<string, string> _viewIDToResourcesPath = new Dictionary<string, string>
         {
-            { ViewIDs.IconTextView, "UI/IconTextView" }
+            { ViewIDs.IconTextView, "UI/IconTextView" },
+            { ViewIDs.MainMenuScreenView, "UI/MainMenu/MainMenuScreenView" }
         };
 
         public ViewsFactory(ResourcesAssetsLoader resourcesAssetsLoader)

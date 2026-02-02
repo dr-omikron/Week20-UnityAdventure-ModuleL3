@@ -1,8 +1,11 @@
 ﻿using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Infrastructure.DI;
+using _Project.Develop.Runtime.UI;
+using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.Factories;
+using UnityEngine;
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
@@ -14,6 +17,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateSymbolsSequenceGenerator);
             container.RegisterAsSingle(CreateInputStringReader);
             container.RegisterAsSingle(CreateGameCycleFactory);
+            container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
         }
 
         private static GameplayPlayerInputs CreateGameplayPlayerInputs(DIContainer c) => new GameplayPlayerInputs();
@@ -25,5 +29,15 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         }
 
         private static GameCycleFactory CreateGameCycleFactory(DIContainer c) => new GameCycleFactory(c);
+
+        private static SceneUIRoot CreateSceneUIRoot(DIContainer c)
+        {
+            ResourcesAssetsLoader resourcesAssetsLoader = c.Resolve<ResourcesAssetsLoader>();
+
+            SceneUIRoot sceneUIRootPrefab = 
+                resourcesAssetsLoader.Load<SceneUIRoot>("UI/SceneUIRoot");
+
+            return Object.Instantiate(sceneUIRootPrefab);
+        }
     }
 }

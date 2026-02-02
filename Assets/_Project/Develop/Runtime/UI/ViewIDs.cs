@@ -3,5 +3,6 @@
     public class ViewIDs
     {
         public const string IconTextView = nameof(IconTextView);
+        public const string MainMenuScreenView = nameof(MainMenuScreenView);
     }
 }

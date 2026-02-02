@@ -36,6 +36,7 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreatePlayerStatisticProvider);
             container.RegisterAsSingle(CreateSavingFilesCheckService);
             container.RegisterAsSingle(CreateProjectPresentersFactory);
+            container.RegisterAsSingle(CreateViewsFactory);
         }
 
         private static CoroutinesPerformer CreateCoroutinesPerformer(DIContainer c)
@@ -120,5 +121,8 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
 
         private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer c)
             => new ProjectPresentersFactory(c);
+
+        private static ViewsFactory CreateViewsFactory(DIContainer c)
+            => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
     }
 }

@@ -1,10 +1,12 @@
-﻿using _Project.Develop.Runtime.Gameplay.Features;
+﻿using System.Collections.Generic;
+using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.Factories;
+using _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement;
 using UnityEngine;
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
@@ -15,6 +17,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         {
             container.RegisterAsSingle(CreateGameplayPlayerInputs);
             container.RegisterAsSingle(CreateSymbolsSequenceGenerator);
+            container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateInputStringReader);
             container.RegisterAsSingle(CreateGameCycleFactory);
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
@@ -22,6 +25,15 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static GameplayPlayerInputs CreateGameplayPlayerInputs(DIContainer c) => new GameplayPlayerInputs();
         private static SymbolsSequenceGenerator CreateSymbolsSequenceGenerator(DIContainer c) => new SymbolsSequenceGenerator();
+        private static ObjectsUpdater CreateObjectsUpdater(DIContainer c)
+        {
+            List<IUpdatable> updatables = new List<IUpdatable>();
+            GameplayPlayerInputs inputs = c.Resolve<GameplayPlayerInputs>();
+            updatables.Add(inputs);
+
+            return new ObjectsUpdater(updatables);
+        }
+
         private static InputStringReader CreateInputStringReader(DIContainer c)
         {
             ICoroutinesPerformer coroutinesPerformer = c.Resolve<ICoroutinesPerformer>();
@@ -29,6 +41,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         }
 
         private static GameCycleFactory CreateGameCycleFactory(DIContainer c) => new GameCycleFactory(c);
+
 
         private static SceneUIRoot CreateSceneUIRoot(DIContainer c)
         {
@@ -39,5 +52,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
             return Object.Instantiate(sceneUIRootPrefab);
         }
+
     }
 }

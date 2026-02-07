@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _Project.Develop.Runtime.Gameplay.Configs;
 using _Project.Develop.Runtime.Gameplay.Infrastructure;
+using _Project.Develop.Runtime.Meta.Configs;
 using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
@@ -41,13 +42,13 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
         public void Start()
         {
-            LevelConfig levelConfig = _configsProviderService.GetConfig<LevelConfig>();
+            PricesConfig pricesConfig = _configsProviderService.GetConfig<PricesConfig>();
             
             Debug.Log($"Выбрать режим игры: {KeyboardInputKeys.LoadNumbersModeKey} - сгенерировать цифры, " +
                       $"{KeyboardInputKeys.LoadCharactersModeKey} - сгенерировать буквы, " +
                       $"{KeyboardInputKeys.ShowInfoKey} - показать прогресс.");
 
-            Debug.Log($"{KeyboardInputKeys.ResetProgressKey} - Сбросить прогресс за {levelConfig.ResetPrice} золота.");
+            Debug.Log($"{KeyboardInputKeys.ResetProgressKey} - Сбросить прогресс за {pricesConfig.ResetPrice} золота.");
         }
 
         private void OnSelectedGameModeArgs(GameplayInputArgs args) 

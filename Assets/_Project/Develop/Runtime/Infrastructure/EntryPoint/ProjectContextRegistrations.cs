@@ -1,7 +1,6 @@
 ﻿using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
-using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
@@ -12,7 +11,6 @@ using _Project.Develop.Runtime.Utilities.DataManagement.KeyStorage;
 using _Project.Develop.Runtime.Utilities.DataManagement.Serializers;
 using _Project.Develop.Runtime.Utilities.Factories;
 using _Project.Develop.Runtime.Utilities.LoadScreen;
-using _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement;
 using _Project.Develop.Runtime.Utilities.Reactive;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
 using UnityEngine;
@@ -29,7 +27,6 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateSceneLoaderService);
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
             container.RegisterAsSingle(CreateSceneSwitcherService);
-            container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateWalletService).NonLazy();
             container.RegisterAsSingle(CreatePlayerProgressTracker).NonLazy();
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
@@ -77,8 +74,6 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
             return Object.Instantiate(standardLoadingScreenPrefab);
         }
 
-        private static ObjectsUpdater CreateObjectsUpdater(DIContainer c) => new ObjectsUpdater();
-
         private static WalletService CreateWalletService(DIContainer c)
             => new WalletService(new ReactiveVariable<int>(), c.Resolve<PlayerCurrencyProvider>());
 
@@ -125,7 +120,6 @@ namespace _Project.Develop.Runtime.Infrastructure.EntryPoint
 
         private static ViewsFactory CreateViewsFactory(DIContainer c)
             => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
-
 
     }
 }

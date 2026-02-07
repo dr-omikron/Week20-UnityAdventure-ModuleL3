@@ -17,7 +17,8 @@ namespace _Project.Develop.Runtime.Utilities.ConfigsManagement
         {
             { typeof(LevelConfig), "Configs/LevelConfig" },
             { typeof(StartPlayerDataConfig), "Configs/StartPlayerDataConfig" },
-            { typeof(IconTextViewConfig), "Configs/IconTextConfig" }
+            { typeof(IconTextViewConfig), "Configs/IconTextConfig" },
+            { typeof(PricesConfig), "Configs/PricesConfig" }
         };
 
         public ResourcesConfigsLoader(ResourcesAssetsLoader resourcesAssetsLoader)

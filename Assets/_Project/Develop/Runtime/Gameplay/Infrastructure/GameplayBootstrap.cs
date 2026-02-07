@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Infrastructure;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
@@ -37,9 +36,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             _coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
             _objectsUpdater = _container.Resolve<ObjectsUpdater>();
 
-            GameplayPlayerInputs gameplayPlayerInputs = _container.Resolve<GameplayPlayerInputs>();
-            _objectsUpdater.Add(gameplayPlayerInputs);
-            
             GameCycleFactory gameCycleFactory = _container.Resolve<GameCycleFactory>();
             _gameCycle = gameCycleFactory.Create(_inputArgs);
 

@@ -4,9 +4,12 @@ namespace _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement
 {
     public class ObjectsUpdater
     {
-        private readonly List<IUpdatable> _updatables =  new List<IUpdatable>();
+        private readonly List<IUpdatable> _updatables;
 
-        public void Add(IUpdatable updatable) => _updatables.Add(updatable);
+        public ObjectsUpdater(List<IUpdatable> updatables)
+        {
+            _updatables = new List<IUpdatable>(updatables);
+        }
 
         public void Update(float deltaTime)
         {

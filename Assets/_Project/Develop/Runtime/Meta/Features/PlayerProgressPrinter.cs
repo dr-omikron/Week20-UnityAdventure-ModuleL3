@@ -25,7 +25,7 @@ namespace _Project.Develop.Runtime.Meta.Features
 
         public void Print()
         {
-            Debug.Log($"Победы: { _playerProgressTracker.Wins }, Поражения: { _playerProgressTracker.Losses }, Золото: { _walletService.Gold.Value }");
+            Debug.Log($"Победы: { _playerProgressTracker.Wins.Value }, Поражения: { _playerProgressTracker.Losses.Value }, Золото: { _walletService.Gold.Value }");
         }
 
         public void Dispose() => _mainMenuPlayerInputs.ShowInfoKeyDown -= Print;

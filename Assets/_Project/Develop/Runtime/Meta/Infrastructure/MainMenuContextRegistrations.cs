@@ -1,4 +1,5 @@
-﻿using _Project.Develop.Runtime.Gameplay.Features;
+﻿using System.Collections.Generic;
+using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.UI;
@@ -8,6 +9,7 @@ using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement.DataProviders;
 using _Project.Develop.Runtime.Utilities.Factories;
+using _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement;
 using UnityEngine;
 
 namespace _Project.Develop.Runtime.Meta.Infrastructure
@@ -20,6 +22,7 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             container.RegisterAsSingle(CreateSelectGameModeService);
             container.RegisterAsSingle(CreatePlayerProgressPrinter);
             container.RegisterAsSingle(CreatePlayerProgressRemover);
+            container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateMetaCycleFactory);
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
             container.RegisterAsSingle(CreateMainMenuPresentersFactory);
@@ -70,6 +73,15 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
                 resourcesAssetsLoader.Load<SceneUIRoot>("UI/SceneUIRoot");
 
             return Object.Instantiate(sceneUIRootPrefab);
+        }
+
+        private static ObjectsUpdater CreateObjectsUpdater(DIContainer c)
+        {
+            List<IUpdatable> updatables = new List<IUpdatable>();
+            MainMenuPlayerInputs inputs = c.Resolve<MainMenuPlayerInputs>();
+            updatables.Add(inputs);
+
+            return new ObjectsUpdater(updatables);
         }
 
         private static MainMenuPresentersFactory CreateMainMenuPresentersFactory(DIContainer c)

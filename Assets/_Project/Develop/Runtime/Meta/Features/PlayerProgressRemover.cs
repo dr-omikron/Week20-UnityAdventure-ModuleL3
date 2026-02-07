@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Develop.Runtime.Gameplay.Configs;
+using _Project.Develop.Runtime.Meta.Configs;
 using _Project.Develop.Runtime.Meta.Infrastructure;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
@@ -13,7 +13,7 @@ namespace _Project.Develop.Runtime.Meta.Features
         private readonly PlayerStatisticProvider _playerStatisticProvider;
         private readonly WalletService _walletService;
         private readonly MainMenuPlayerInputs _mainMenuPlayerInputs;
-        private readonly LevelConfig _levelConfig;
+        private readonly PricesConfig _pricesConfig;
         private readonly SaveLoadDataProvidersService _saveLoadDataProvidersService;
 
         public PlayerProgressRemover(
@@ -27,7 +27,7 @@ namespace _Project.Develop.Runtime.Meta.Features
             _playerStatisticProvider = playerStatisticProvider;
             _walletService = walletService;
             _saveLoadDataProvidersService = saveLoadDataProvidersService;
-            _levelConfig = configsProviderService.GetConfig<LevelConfig>();
+            _pricesConfig = configsProviderService.GetConfig<PricesConfig>();
 
             _mainMenuPlayerInputs.ResetProgressKeyDown += Remove;
         }
@@ -40,13 +40,13 @@ namespace _Project.Develop.Runtime.Meta.Features
                 return;
             }
 
-            if (_walletService.Enough(_levelConfig.ResetPrice))
+            if (_walletService.Enough(_pricesConfig.ResetPrice))
             {
-                _walletService.Spend(_levelConfig.ResetPrice);
+                _walletService.Spend(_pricesConfig.ResetPrice);
                 _playerStatisticProvider.Reset();
                 _saveLoadDataProvidersService.SaveAll();
 
-                Debug.Log($"Прогресс успешно сброшен, с кошелька списано { _levelConfig.ResetPrice } золота. Баланс - { _walletService.Gold.Value }");
+                Debug.Log($"Прогресс успешно сброшен, с кошелька списано { _pricesConfig.ResetPrice } золота. Баланс - { _walletService.Gold.Value }");
             }
             else
             {

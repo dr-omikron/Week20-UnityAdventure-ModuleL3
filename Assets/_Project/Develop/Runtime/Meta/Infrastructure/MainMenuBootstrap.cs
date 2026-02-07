@@ -26,9 +26,6 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
         public override IEnumerator Initialize()
         {
             _objectsUpdater = _container.Resolve<ObjectsUpdater>();
-            _mainMenuPlayerInputs = _container.Resolve<MainMenuPlayerInputs>();
-
-            _objectsUpdater.Add(_mainMenuPlayerInputs);
 
             MetaCycleFactory factory = _container.Resolve<MetaCycleFactory>();
             _metaCycle = factory.Create();

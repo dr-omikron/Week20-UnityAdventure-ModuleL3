@@ -4,5 +4,6 @@
     {
         public const string IconTextView = nameof(IconTextView);
         public const string MainMenuScreenView = nameof(MainMenuScreenView);
+        public const string GameplayScreenView = nameof(GameplayScreenView);
     }
 }

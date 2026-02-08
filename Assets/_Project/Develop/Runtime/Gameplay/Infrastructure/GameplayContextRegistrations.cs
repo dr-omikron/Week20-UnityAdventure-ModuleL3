@@ -3,6 +3,7 @@ using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.UI;
+using _Project.Develop.Runtime.UI.Gameplay;
 using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.Factories;
@@ -20,7 +21,9 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateInputStringReader);
             container.RegisterAsSingle(CreateGameCycleFactory);
+            container.RegisterAsSingle(CreateGameplayPresentersFactory);
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
+            container.RegisterAsSingle(CreateGameplayScreenPresenter).NonLazy();
         }
 
         private static GameplayPlayerInputs CreateGameplayPlayerInputs(DIContainer c) => new GameplayPlayerInputs();
@@ -53,5 +56,21 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             return Object.Instantiate(sceneUIRootPrefab);
         }
 
+        private static GameplayPresentersFactory CreateGameplayPresentersFactory(DIContainer c)
+        {
+            return new GameplayPresentersFactory(c);
+        }
+
+        private static GameplayScreenPresenter CreateGameplayScreenPresenter(DIContainer c)
+        {
+            SceneUIRoot uiRoot = c.Resolve<SceneUIRoot>();
+
+            GameplayScreenView screenView = 
+                c.Resolve<ViewsFactory>().CreateView<GameplayScreenView>(ViewIDs.GameplayScreenView, uiRoot.HUDLayer);
+
+            GameplayScreenPresenter presenter = c.Resolve<GameplayPresentersFactory>().CreateGameplayScreenPresenter(screenView);
+
+            return presenter;
+        }
     }
 }

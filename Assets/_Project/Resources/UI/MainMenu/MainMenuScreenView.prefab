@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7062653738059325183}
   - component: {fileID: 524432158323873074}
+  - component: {fileID: 8478301052150663021}
   m_Layer: 5
   m_Name: MainMenuScreenView
   m_TagString: Untagged
@@ -50,6 +51,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IconTextListView>k__BackingField: {fileID: 3085174165273297991}
+--- !u!222 &8478301052150663021
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2328728674103572509}
+  m_CullTransparentMesh: 1
 --- !u!1001 &6071615484739570525
 PrefabInstance:
   m_ObjectHideFlags: 0

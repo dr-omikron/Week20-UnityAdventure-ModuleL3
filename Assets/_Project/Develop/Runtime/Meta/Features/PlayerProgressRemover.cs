@@ -2,7 +2,6 @@
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement.DataProviders;
-using UnityEngine;
 
 namespace _Project.Develop.Runtime.Meta.Features
 {
@@ -25,12 +24,12 @@ namespace _Project.Develop.Runtime.Meta.Features
             _pricesConfig = configsProviderService.GetConfig<PricesConfig>();
         }
 
-        private void Remove()
+        public bool TryRemove(out string resultMessage)
         {
             if(_playerStatisticProvider.IsNotZeroProgress() == false)
             {
-                Debug.Log("Прогресс уже сброшен");
-                return;
+                resultMessage = "Progress has already been reset";
+                return false;
             }
 
             if (_walletService.Enough(_pricesConfig.ResetPrice))
@@ -39,12 +38,12 @@ namespace _Project.Develop.Runtime.Meta.Features
                 _playerStatisticProvider.Reset();
                 _saveLoadDataProvidersService.SaveAll();
 
-                Debug.Log($"Прогресс успешно сброшен, с кошелька списано { _pricesConfig.ResetPrice } золота. Баланс - { _walletService.Gold.Value }");
+                resultMessage = $"Progress successfully reset { _pricesConfig.ResetPrice } gold debited from wallet. Balance - { _walletService.Gold.Value }";
+                return true;
             }
-            else
-            {
-                Debug.Log($"{_walletService.Gold.Value} золота не достаточно для сброса прогресса.");
-            }
+
+            resultMessage = $"{_walletService.Gold.Value} gold is not enough to reset progress.";
+            return false;
         }
     }
 }

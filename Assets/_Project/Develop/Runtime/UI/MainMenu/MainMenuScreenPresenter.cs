@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using _Project.Develop.Runtime.Meta.Configs;
+using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.UI.MainMenu;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.Factories;
@@ -13,6 +14,7 @@ namespace _Project.Develop.Runtime.UI.CommonViews
         private readonly MainMenuScreenView _screenView;
         private readonly ProjectPresentersFactory _projectPresentersFactory;
         private readonly ConfigsProviderService _configsProviderService;
+        private readonly PlayerProgressRemover _playerProgressRemover;
         private readonly ProjectPopupService _popupService;
 
         private readonly List<IPresenter> _childPresenters = new List<IPresenter>();
@@ -21,16 +23,20 @@ namespace _Project.Develop.Runtime.UI.CommonViews
             MainMenuScreenView screenView, 
             ProjectPresentersFactory projectPresentersFactory, 
             ConfigsProviderService configsProviderService, 
+            PlayerProgressRemover playerProgressRemover,
             ProjectPopupService popupService)
         {
             _screenView = screenView;
             _projectPresentersFactory = projectPresentersFactory;
             _configsProviderService = configsProviderService;
+            _playerProgressRemover = playerProgressRemover;
             _popupService = popupService;
         }
 
         public void Initialize()
         {
+            _screenView.ResetProgressButtonClicked += OnResetProgressButtonClicked;
+
             CreateIconTextListPresenter();
 
             string tutorialMessage = CreateTutorialMessage();
@@ -42,6 +48,8 @@ namespace _Project.Develop.Runtime.UI.CommonViews
 
         public void Dispose()
         {
+            _screenView.ResetProgressButtonClicked -= OnResetProgressButtonClicked;
+
             foreach (IPresenter childPresenter in _childPresenters)
                 childPresenter.Dispose();
 
@@ -54,6 +62,12 @@ namespace _Project.Develop.Runtime.UI.CommonViews
                 _projectPresentersFactory.CreateIconTextListPresenter(_screenView.IconTextListView);
 
             _childPresenters.Add(iconTextListPresenter);
+        }
+
+        private void OnResetProgressButtonClicked()
+        {
+            _playerProgressRemover.TryRemove(out string resultMessage);
+            _popupService.OpenInfoPopup(resultMessage);
         }
 
         private string CreateTutorialMessage()

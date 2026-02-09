@@ -1,4 +1,5 @@
 ﻿using _Project.Develop.Runtime.Infrastructure.DI;
+using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.UI.MainMenu;
@@ -21,7 +22,8 @@ namespace _Project.Develop.Runtime.Utilities.Factories
                 view, 
                 _container.Resolve<ProjectPresentersFactory>(),
                 _container.Resolve<ConfigsProviderService>(),
-            _container.Resolve<ProjectPopupService>());
+                _container.Resolve<PlayerProgressRemover>(),
+                _container.Resolve<ProjectPopupService>());
         }
     }
 }

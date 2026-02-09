@@ -29,6 +29,7 @@ namespace _Project.Develop.Runtime.Gameplay.Inputs
         {
             _isActive = true;
             _buffer.Clear();
+            Changed?.Invoke(_buffer.ToString());
 
             yield return _coroutinesPerformer.StartPerform(InputProcess(maxLength));
         }

@@ -4,11 +4,10 @@ using _Project.Develop.Runtime.Gameplay.Configs;
 using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Meta.Features;
+using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
-using _Project.Develop.Runtime.Utilities.PlayerInput;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
-using UnityEngine;
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
@@ -24,7 +23,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         private readonly ICoroutinesPerformer _coroutinesPerformer;
         private readonly SaveLoadDataProvidersService _saveLoadDataProvidersService;
         private readonly GameplayInputArgs _inputArgs;
-
+        private readonly ProjectPopupService _popupService;
 
         public GameCycle(
             PlayerProgressTracker playerProgressTracker,
@@ -36,6 +35,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             GameplayPlayerInputs gameplayPlayerInputs, 
             ICoroutinesPerformer coroutinesPerformer,
             SaveLoadDataProvidersService saveLoadDataProvidersService,
+            ProjectPopupService popupService,
             GameplayInputArgs inputArgs)
         {
             _playerProgressTracker = playerProgressTracker;
@@ -47,14 +47,13 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             _gameplayPlayerInputs = gameplayPlayerInputs;
             _coroutinesPerformer = coroutinesPerformer;
             _saveLoadDataProvidersService = saveLoadDataProvidersService;
+            _popupService = popupService;
             _inputArgs = inputArgs;
         }
 
         public IEnumerator Start()
         {
             string generated = _symbolsSequenceGenerator.Generate(_inputArgs.Symbols, _inputArgs.SequenceLenght);
-
-            Debug.Log($"Retry symbols sequence - { generated }");
 
             yield return _coroutinesPerformer.StartPerform(_inputStringReader.StartProcess(_inputArgs.SequenceLenght));
 
@@ -68,9 +67,8 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
         private void ProcessWin()
         {
-            Debug.Log("Win");
-            Debug.Log($"Press { KeyboardInputKeys.EndGameKey } to Return in Main Menu");
-            
+            _popupService.OpenInfoPopup("You win");
+
             _gameplayPlayerInputs.EndGameKeyDown += OnMainMenuReturn;
 
             _playerProgressTracker.AddWin();
@@ -79,8 +77,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
         private void ProcessDefeat()
         {
-            Debug.Log("Defeat");
-            Debug.Log($"Press { KeyboardInputKeys.EndGameKey } to Restart Game");
+            _popupService.OpenInfoPopup("You lose");
 
             _gameplayPlayerInputs.EndGameKeyDown += OnRestartGame;
 

@@ -4,6 +4,7 @@ using _Project.Develop.Runtime.Gameplay.Infrastructure;
 using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
+using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.DataManagement;
@@ -31,6 +32,7 @@ namespace _Project.Develop.Runtime.Utilities.Factories
             GameplayPlayerInputs gameplayPlayerInputs = _container.Resolve<GameplayPlayerInputs>();
             ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
             SaveLoadDataProvidersService saveLoadDataProvidersService = _container.Resolve<SaveLoadDataProvidersService>();
+            ProjectPopupService popupService = _container.Resolve<ProjectPopupService>();
 
             return new GameCycle(
                 playerProgressTracker,
@@ -42,6 +44,7 @@ namespace _Project.Develop.Runtime.Utilities.Factories
                 gameplayPlayerInputs,
                 coroutinesPerformer,
                 saveLoadDataProvidersService,
+                popupService,
                 gameplayInputArgs);
         }
     }

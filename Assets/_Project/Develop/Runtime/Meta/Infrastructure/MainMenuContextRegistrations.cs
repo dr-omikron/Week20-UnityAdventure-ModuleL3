@@ -3,6 +3,7 @@ using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
 using _Project.Develop.Runtime.UI;
+using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.UI.MainMenu;
 using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
@@ -25,9 +26,8 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateMetaCycleFactory);
             container.RegisterAsSingle(CreatePopupService);
-            container.RegisterAsSingle(CreateMainMenuPresentersFactory);
+            container.RegisterAsSingle(CreateScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
-            container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
         }
 
         private static MainMenuPlayerInputs CreateMainMenuPlayerInputs(DIContainer c) => new MainMenuPlayerInputs();
@@ -85,19 +85,16 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             return new ObjectsUpdater(updatables);
         }
 
-        private static MainMenuPresentersFactory CreateMainMenuPresentersFactory(DIContainer c)
-            => new MainMenuPresentersFactory(c);
-
-        private static MainMenuScreenPresenter CreateMainMenuScreenPresenter(DIContainer c)
+        private static ScreenPresenter CreateScreenPresenter(DIContainer c)
         {
             SceneUIRoot uiRoot = c.Resolve<SceneUIRoot>();
 
-            MainMenuScreenView view = c
+            CommonScreenView view = c
                 .Resolve<ViewsFactory>()
-                .CreateView<MainMenuScreenView>(ViewIDs.MainMenuScreenView, uiRoot.HUDLayer);
+                .CreateView<CommonScreenView>(ViewIDs.MainMenuScreenView, uiRoot.HUDLayer);
 
-            MainMenuScreenPresenter presenter =
-                c.Resolve<MainMenuPresentersFactory>().CreateMainMenuScreenPresenter(view);
+            ScreenPresenter presenter =
+                c.Resolve<ProjectPresentersFactory>().CreateScreenPresenter(view);
 
             return presenter;
         }

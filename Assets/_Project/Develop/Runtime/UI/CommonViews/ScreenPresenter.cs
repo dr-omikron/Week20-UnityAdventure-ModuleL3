@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
-using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.Utilities.Factories;
 
-namespace _Project.Develop.Runtime.UI.Gameplay
+namespace _Project.Develop.Runtime.UI.CommonViews
 {
-    public class GameplayScreenPresenter : IPresenter
+    public class ScreenPresenter : IPresenter
     {
-        private readonly GameplayScreenView _gameplayScreenView;
+        private readonly IIconTextListScreenView _screenView;
         private readonly ProjectPresentersFactory _projectPresentersFactory;
 
         private readonly List<IPresenter> _childPresenters = new List<IPresenter>();
 
-        public GameplayScreenPresenter(GameplayScreenView gameplayScreenView, ProjectPresentersFactory projectPresentersFactory)
+        public ScreenPresenter(IIconTextListScreenView screenView, ProjectPresentersFactory projectPresentersFactory)
         {
-            _gameplayScreenView = gameplayScreenView;
+            _screenView = screenView;
             _projectPresentersFactory = projectPresentersFactory;
         }
 
@@ -36,7 +35,7 @@ namespace _Project.Develop.Runtime.UI.Gameplay
         private void CreateIconTextListPresenter()
         {
             IconTextListPresenter iconTextListPresenter =
-                _projectPresentersFactory.CreateIconTextListPresenter(_gameplayScreenView.IconTextListView);
+                _projectPresentersFactory.CreateIconTextListPresenter(_screenView.IconTextListView);
 
             _childPresenters.Add(iconTextListPresenter);
         }

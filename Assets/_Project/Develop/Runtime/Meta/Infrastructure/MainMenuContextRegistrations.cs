@@ -21,12 +21,12 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
         {
             container.RegisterAsSingle(CreateMainMenuPlayerInputs);
             container.RegisterAsSingle(CreateSelectGameModeService);
-            container.RegisterAsSingle(CreatePlayerProgressPrinter);
             container.RegisterAsSingle(CreatePlayerProgressRemover);
             container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateMetaCycleFactory);
             container.RegisterAsSingle(CreatePopupService);
-            container.RegisterAsSingle(CreateScreenPresenter).NonLazy();
+            container.RegisterAsSingle(CreateMainMenuPresentersFactory);
+            container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
         }
 
@@ -39,25 +39,14 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             return new SelectGameModeArgsService(mainMenuPlayerInputs, configsProviderService);
         }
 
-        private static PlayerProgressPrinter CreatePlayerProgressPrinter(DIContainer c)
-        {
-            PlayerProgressTracker playerProgressTracker = c.Resolve<PlayerProgressTracker>();
-            WalletService walletService = c.Resolve<WalletService>();
-            MainMenuPlayerInputs mainMenuPlayerInputs = c.Resolve<MainMenuPlayerInputs>();
-
-            return new PlayerProgressPrinter(playerProgressTracker, walletService, mainMenuPlayerInputs);
-        }
-
         private static PlayerProgressRemover CreatePlayerProgressRemover(DIContainer c)
         {
-            MainMenuPlayerInputs mainMenuPlayerInputs = c.Resolve<MainMenuPlayerInputs>();
             ConfigsProviderService configsProviderService = c.Resolve<ConfigsProviderService>();
             WalletService walletService = c.Resolve<WalletService>();
             PlayerStatisticProvider playerStatisticProvider = c.Resolve<PlayerStatisticProvider>();
             SaveLoadDataProvidersService saveLoadDataProvidersService = c.Resolve<SaveLoadDataProvidersService>();
             
             return new PlayerProgressRemover(
-                mainMenuPlayerInputs,
                 configsProviderService,
                 walletService,
                 playerStatisticProvider,
@@ -85,16 +74,19 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             return new ObjectsUpdater(updatables);
         }
 
-        private static ScreenPresenter CreateScreenPresenter(DIContainer c)
+        private static MainMenuPresentersFactory CreateMainMenuPresentersFactory(DIContainer c) 
+            => new MainMenuPresentersFactory(c);
+
+        private static MainMenuScreenPresenter CreateMainMenuScreenPresenter(DIContainer c)
         {
             SceneUIRoot uiRoot = c.Resolve<SceneUIRoot>();
 
-            CommonScreenView view = c
+            MainMenuScreenView view = c
                 .Resolve<ViewsFactory>()
-                .CreateView<CommonScreenView>(ViewIDs.MainMenuScreenView, uiRoot.HUDLayer);
+                .CreateView<MainMenuScreenView>(ViewIDs.MainMenuScreenView, uiRoot.HUDLayer);
 
-            ScreenPresenter presenter =
-                c.Resolve<ProjectPresentersFactory>().CreateScreenPresenter(view);
+            MainMenuScreenPresenter presenter =
+                c.Resolve<MainMenuPresentersFactory>().CreateMainMenuScreenPresenter(view);
 
             return presenter;
         }

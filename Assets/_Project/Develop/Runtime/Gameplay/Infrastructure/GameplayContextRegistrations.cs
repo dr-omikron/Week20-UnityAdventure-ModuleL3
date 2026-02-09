@@ -3,7 +3,7 @@ using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Gameplay.Inputs;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.UI;
-using _Project.Develop.Runtime.UI.CommonViews;
+using _Project.Develop.Runtime.UI.Gameplay;
 using _Project.Develop.Runtime.Utilities.AssetsManagement;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.Factories;
@@ -22,7 +22,8 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateInputStringReader);
             container.RegisterAsSingle(CreateGameCycleFactory);
             container.RegisterAsSingle(CreatePopupService);
-            container.RegisterAsSingle(CreateScreenPresenter).NonLazy();
+            container.RegisterAsSingle(CreateGameplayPresentersFactory);
+            container.RegisterAsSingle(CreateGameplayScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
         }
 
@@ -55,17 +56,20 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
             return Object.Instantiate(sceneUIRootPrefab);
         }
+        
+        private static GameplayPresentersFactory CreateGameplayPresentersFactory(DIContainer c)
+            => new GameplayPresentersFactory(c);
 
-        private static ScreenPresenter CreateScreenPresenter(DIContainer c)
+        private static GameplayScreenPresenter CreateGameplayScreenPresenter(DIContainer c)
         {
             SceneUIRoot uiRoot = c.Resolve<SceneUIRoot>();
 
-            CommonScreenView view = c
+            GameplayScreenView view = c
                 .Resolve<ViewsFactory>()
-                .CreateView<CommonScreenView>(ViewIDs.MainMenuScreenView, uiRoot.HUDLayer);
+                .CreateView<GameplayScreenView>(ViewIDs.GameplayScreenView, uiRoot.HUDLayer);
 
-            ScreenPresenter presenter =
-                c.Resolve<ProjectPresentersFactory>().CreateScreenPresenter(view);
+            GameplayScreenPresenter presenter =
+                c.Resolve<GameplayPresentersFactory>().CreateGameplayScreenPresenter(view);
 
             return presenter;
         }

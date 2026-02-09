@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.Utilities.Factories;
 
-namespace _Project.Develop.Runtime.UI.CommonViews
+namespace _Project.Develop.Runtime.UI.Gameplay
 {
-    public class ScreenPresenter : IPresenter
+    public class GameplayScreenPresenter : IPresenter
     {
-        private readonly IIconTextListScreenView _screenView;
+        private readonly GameplayScreenView _screenView;
         private readonly ProjectPresentersFactory _projectPresentersFactory;
 
         private readonly List<IPresenter> _childPresenters = new List<IPresenter>();
 
-        public ScreenPresenter(IIconTextListScreenView screenView, ProjectPresentersFactory projectPresentersFactory)
+        public GameplayScreenPresenter(GameplayScreenView screenView, ProjectPresentersFactory projectPresentersFactory)
         {
             _screenView = screenView;
             _projectPresentersFactory = projectPresentersFactory;

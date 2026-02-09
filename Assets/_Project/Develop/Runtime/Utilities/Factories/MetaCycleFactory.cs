@@ -19,7 +19,6 @@ namespace _Project.Develop.Runtime.Utilities.Factories
         public MetaCycle Create()
         {
             SelectGameModeArgsService selectGameModeArgsService = _container.Resolve<SelectGameModeArgsService>();
-            PlayerProgressPrinter playerProgressPrinter = _container.Resolve<PlayerProgressPrinter>();
             PlayerProgressRemover playerProgressRemover = _container.Resolve<PlayerProgressRemover>();
             ConfigsProviderService configsProviderService = _container.Resolve<ConfigsProviderService>();
             SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
@@ -27,7 +26,6 @@ namespace _Project.Develop.Runtime.Utilities.Factories
 
             return new MetaCycle(
                 selectGameModeArgsService,
-                playerProgressPrinter,
                 playerProgressRemover,
                 configsProviderService,
                 sceneSwitcherService,

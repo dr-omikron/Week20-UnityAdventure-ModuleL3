@@ -9,8 +9,6 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
     {
         public event Action LoadCharactersModeKeyDown;
         public event Action LoadNumbersModeKeyDown;
-        public event Action ShowInfoKeyDown;
-        public event Action ResetProgressKeyDown;
 
         public void Update(float deltaTime)
         {
@@ -19,12 +17,6 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
             if(Input.GetKeyDown(KeyboardInputKeys.LoadNumbersModeKey))
                 LoadNumbersModeKeyDown?.Invoke();
-
-            if(Input.GetKeyDown(KeyboardInputKeys.ShowInfoKey))
-                ShowInfoKeyDown?.Invoke();
-
-            if(Input.GetKeyDown(KeyboardInputKeys.ResetProgressKey))
-                ResetProgressKeyDown?.Invoke();
         }
     }
 }

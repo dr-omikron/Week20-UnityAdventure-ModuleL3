@@ -18,13 +18,11 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
         private readonly ConfigsProviderService _configsProviderService;
         private readonly SceneSwitcherService _sceneSwitcherService;
         private readonly ICoroutinesPerformer _coroutinesPerformer;
-        private readonly PlayerProgressPrinter _playerProgressPrinter;
         private readonly PlayerProgressRemover _playerProgressRemover;
 
 
         public MetaCycle(
             SelectGameModeArgsService selectGameModeArgsService, 
-            PlayerProgressPrinter playerProgressPrinter, 
             PlayerProgressRemover playerProgressRemover, 
             ConfigsProviderService configsProviderService, 
             SceneSwitcherService sceneSwitcherService, 
@@ -34,7 +32,6 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             _configsProviderService = configsProviderService;
             _sceneSwitcherService = sceneSwitcherService;
             _coroutinesPerformer = coroutinesPerformer;
-            _playerProgressPrinter = playerProgressPrinter;
             _playerProgressRemover = playerProgressRemover;
 
             _selectGameModeArgsService.GameModeSelected += OnSelectedGameModeArgs;
@@ -42,13 +39,7 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
 
         public void Start()
         {
-            PricesConfig pricesConfig = _configsProviderService.GetConfig<PricesConfig>();
             
-            Debug.Log($"Выбрать режим игры: {KeyboardInputKeys.LoadNumbersModeKey} - сгенерировать цифры, " +
-                      $"{KeyboardInputKeys.LoadCharactersModeKey} - сгенерировать буквы, " +
-                      $"{KeyboardInputKeys.ShowInfoKey} - показать прогресс.");
-
-            Debug.Log($"{KeyboardInputKeys.ResetProgressKey} - Сбросить прогресс за {pricesConfig.ResetPrice} золота.");
         }
 
         private void OnSelectedGameModeArgs(GameplayInputArgs args) 

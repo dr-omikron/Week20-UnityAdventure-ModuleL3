@@ -15,7 +15,7 @@ namespace _Project.Develop.Runtime.Utilities.Factories
         {
             { ViewIDs.IconTextView, "UI/IconTextView" },
             { ViewIDs.MainMenuScreenView, "UI/MainMenu/MainMenuScreenView" },
-            { ViewIDs.GameplayScreenView, "UI/MainMenu/GameplayScreenView" },
+            { ViewIDs.GameplayScreenView, "UI/Gameplay/GameplayScreenView" },
             { ViewIDs.InfoPopupView, "UI/InfoPopup" }
         };
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8712082099859809420}
   - component: {fileID: 8108225250496384062}
-  - component: {fileID: 2025522235142182922}
+  - component: {fileID: 8178697871893595261}
   m_Layer: 5
   m_Name: GameplayScreenView
   m_TagString: Untagged
@@ -47,7 +47,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2607773830052886609}
   m_CullTransparentMesh: 1
---- !u!114 &2025522235142182922
+--- !u!114 &8178697871893595261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,7 +56,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2607773830052886609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc4f01d8a85deef44a4304c23bcb0b87, type: 3}
+  m_Script: {fileID: 11500000, guid: c840171665b04ced837929d31f0f8b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <IconTextListView>k__BackingField: {fileID: 8820536823059140195}

@@ -22,6 +22,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateInputStringReader);
             container.RegisterAsSingle(CreateGameCycleFactory);
             container.RegisterAsSingle(CreateGameplayPresentersFactory);
+            container.RegisterAsSingle(CreatePopupService);
             container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
             container.RegisterAsSingle(CreateGameplayScreenPresenter).NonLazy();
         }
@@ -71,6 +72,14 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             GameplayScreenPresenter presenter = c.Resolve<GameplayPresentersFactory>().CreateGameplayScreenPresenter(screenView);
 
             return presenter;
+        }
+
+        private static ProjectPopupService CreatePopupService(DIContainer c)
+        {
+            return new ProjectPopupService(
+                c.Resolve<ViewsFactory>(),
+                c.Resolve<ProjectPresentersFactory>(),
+                c.Resolve<SceneUIRoot>());
         }
     }
 }

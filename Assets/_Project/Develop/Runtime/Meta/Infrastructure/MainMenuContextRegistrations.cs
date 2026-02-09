@@ -24,8 +24,9 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
             container.RegisterAsSingle(CreatePlayerProgressRemover);
             container.RegisterAsSingle(CreateObjectsUpdater);
             container.RegisterAsSingle(CreateMetaCycleFactory);
-            container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
+            container.RegisterAsSingle(CreatePopupService);
             container.RegisterAsSingle(CreateMainMenuPresentersFactory);
+            container.RegisterAsSingle(CreateSceneUIRoot).NonLazy();
             container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
         }
 
@@ -99,6 +100,14 @@ namespace _Project.Develop.Runtime.Meta.Infrastructure
                 c.Resolve<MainMenuPresentersFactory>().CreateMainMenuScreenPresenter(view);
 
             return presenter;
+        }
+
+        private static ProjectPopupService CreatePopupService(DIContainer c)
+        {
+            return new ProjectPopupService(
+                c.Resolve<ViewsFactory>(),
+                c.Resolve<ProjectPresentersFactory>(),
+                c.Resolve<SceneUIRoot>());
         }
     }
 }

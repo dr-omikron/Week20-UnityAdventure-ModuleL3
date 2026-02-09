@@ -2,11 +2,10 @@
 using _Project.Develop.Runtime.EnumTypes;
 using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Meta.Features;
-using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.Utilities.Factories;
 using _Project.Develop.Runtime.Utilities.Reactive;
 
-namespace _Project.Develop.Runtime.UI
+namespace _Project.Develop.Runtime.UI.CommonViews
 {
     public class IconTextListPresenter : IPresenter
     {

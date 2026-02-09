@@ -1,10 +1,9 @@
 ﻿using System;
 using _Project.Develop.Runtime.EnumTypes;
-using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.UI.Configs;
 using _Project.Develop.Runtime.Utilities.Reactive;
 
-namespace _Project.Develop.Runtime.UI
+namespace _Project.Develop.Runtime.UI.CommonViews
 {
     public class IconTextPresenter : IPresenter
     {

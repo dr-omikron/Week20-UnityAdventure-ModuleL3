@@ -2,7 +2,6 @@
 using _Project.Develop.Runtime.Gameplay.Features;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Meta.Features;
-using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.UI.CommonViews;
 using _Project.Develop.Runtime.UI.Configs;
 using _Project.Develop.Runtime.Utilities.ConfigsManagement;
@@ -36,6 +35,11 @@ namespace _Project.Develop.Runtime.Utilities.Factories
                 _container.Resolve<ViewsFactory>(),
                 this,
                 view);
+        }
+
+        public InfoPopupPresenter CreateInfoPopupPresenter(InfoPopupView view, string infoText)
+        {
+            return new InfoPopupPresenter(view, infoText);
         }
     }
 }

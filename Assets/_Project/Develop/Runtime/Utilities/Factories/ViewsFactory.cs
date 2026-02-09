@@ -15,7 +15,8 @@ namespace _Project.Develop.Runtime.Utilities.Factories
         {
             { ViewIDs.IconTextView, "UI/IconTextView" },
             { ViewIDs.MainMenuScreenView, "UI/MainMenu/MainMenuScreenView" },
-            { ViewIDs.GameplayScreenView, "UI/MainMenu/GameplayScreenView" }
+            { ViewIDs.GameplayScreenView, "UI/MainMenu/GameplayScreenView" },
+            { ViewIDs.InfoPopupView, "UI/InfoPopup" }
         };
 
         public ViewsFactory(ResourcesAssetsLoader resourcesAssetsLoader)

@@ -1,16 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Text;
+using _Project.Develop.Runtime.UI;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using UnityEngine;
 
 namespace _Project.Develop.Runtime.Gameplay.Inputs
 {
-    public class InputStringReader
+    public class InputStringReader : IStringChanged
     {
+        public event Action<string> Changed;
+
         private readonly ICoroutinesPerformer _coroutinesPerformer;
 
         private readonly StringBuilder _buffer = new StringBuilder();
         private bool _isActive;
+
 
         public InputStringReader(ICoroutinesPerformer coroutinesPerformer)
         {
@@ -19,12 +24,11 @@ namespace _Project.Develop.Runtime.Gameplay.Inputs
 
         public string CurrentInput => _buffer.ToString();
 
+
         public IEnumerator StartProcess(int maxLength)
         {
             _isActive = true;
             _buffer.Clear();
-
-            Debug.Log("Ввeдите символы. Для подтверждения нажмиие Enter");
 
             yield return _coroutinesPerformer.StartPerform(InputProcess(maxLength));
         }
@@ -44,7 +48,7 @@ namespace _Project.Develop.Runtime.Gameplay.Inputs
                             if (char.IsLetterOrDigit(c))
                             {
                                 _buffer.Append(c);
-                                Debug.Log(_buffer);
+                                Changed?.Invoke(_buffer.ToString());
                             }
                         }
 
@@ -63,7 +67,7 @@ namespace _Project.Develop.Runtime.Gameplay.Inputs
         private void Submit()
         {
             _isActive = false;
-            Debug.Log($"Ввод завершён: {_buffer}");
         }
+
     }
 }

@@ -56,7 +56,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
             return Object.Instantiate(sceneUIRootPrefab);
         }
-        
+
         private static GameplayPresentersFactory CreateGameplayPresentersFactory(DIContainer c)
             => new GameplayPresentersFactory(c);
 

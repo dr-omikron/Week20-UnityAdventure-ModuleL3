@@ -6,5 +6,6 @@
         public const string MainMenuScreenView = nameof(MainMenuScreenView);
         public const string GameplayScreenView = nameof(GameplayScreenView);
         public const string InfoPopupView = nameof(InfoPopupView);
+        public const string TextBlockView = nameof(TextBlockView);
     }
 }

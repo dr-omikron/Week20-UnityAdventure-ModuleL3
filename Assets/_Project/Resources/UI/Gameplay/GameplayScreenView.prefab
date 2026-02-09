@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IconTextListView>k__BackingField: {fileID: 8820536823059140195}
+  <TextBlockListView>k__BackingField: {fileID: 5878924464167032341}
 --- !u!1001 &358841090621260153
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -23,12 +23,12 @@ namespace _Project.Develop.Runtime.UI
 
         protected abstract Transform PopupsLayer { get; }
 
-        public InfoPopupPresenter OpenInfoPopup(string infoText)
+        public InfoPopupPresenter OpenInfoPopup(string infoText, Action closeCallback = null)
         {
             InfoPopupView view = ViewsFactory.CreateView<InfoPopupView>(ViewIDs.InfoPopupView, PopupsLayer);
             InfoPopupPresenter popupPresenter = _projectPresentersFactory.CreateInfoPopupPresenter(view, infoText);
 
-            OnPopupCreated(popupPresenter, view);
+            OnPopupCreated(popupPresenter, view, closeCallback);
 
             return popupPresenter;
         }
@@ -39,8 +39,8 @@ namespace _Project.Develop.Runtime.UI
 
             popup.Hide(() =>
             {
-                _presenterToInfo[popup].CloseCallback?.Invoke();
                 DisposeFor(popup);
+                _presenterToInfo[popup].CloseCallback?.Invoke();
                 _presenterToInfo.Remove(popup);
             });
         }

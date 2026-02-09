@@ -6,6 +6,5 @@ namespace _Project.Develop.Runtime.Utilities.PlayerInput
     {
         public const KeyCode LoadNumbersModeKey = KeyCode.D;
         public const KeyCode LoadCharactersModeKey = KeyCode.C;
-        public const KeyCode EndGameKey = KeyCode.Space;
     }
 }

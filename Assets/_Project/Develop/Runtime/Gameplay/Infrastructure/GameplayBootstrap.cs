@@ -4,9 +4,7 @@ using _Project.Develop.Runtime.Infrastructure;
 using _Project.Develop.Runtime.Infrastructure.DI;
 using _Project.Develop.Runtime.Utilities.CoroutinesManagement;
 using _Project.Develop.Runtime.Utilities.Factories;
-using _Project.Develop.Runtime.Utilities.ObjectsLifetimeManagement;
 using _Project.Develop.Runtime.Utilities.SceneManagement;
-using UnityEngine;
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
@@ -14,10 +12,8 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
     {
         private DIContainer _container;
         private GameplayInputArgs _inputArgs;
-        private ObjectsUpdater _objectsUpdater;
         private ICoroutinesPerformer _coroutinesPerformer;
         private GameCycle _gameCycle;
-        private bool _isRun;
 
         public override void ProcessRegistration(DIContainer container, IInputSceneArgs sceneArgs = null)
         {
@@ -34,7 +30,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         public override IEnumerator Initialize()
         {
             _coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
-            _objectsUpdater = _container.Resolve<ObjectsUpdater>();
 
             GameCycleFactory gameCycleFactory = _container.Resolve<GameCycleFactory>();
             _gameCycle = gameCycleFactory.Create(_inputArgs);
@@ -42,22 +37,8 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             yield return null;
         }
 
-        private void Update()
-        {
-            if (_isRun == false)
-                return;
-
-            _objectsUpdater.Update(Time.deltaTime);
-        }
-
-        private void OnDestroy()
-        {
-            _gameCycle.Dispose();
-        }
-
         public override void Run()
         {
-            _isRun = true;
             _coroutinesPerformer.StartPerform(_gameCycle.Start());
         }
     }

@@ -11,7 +11,7 @@ using _Project.Develop.Runtime.Utilities.SceneManagement;
 
 namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 {
-    public class GameCycle : IDisposable
+    public class GameCycle
     {
         private readonly PlayerProgressTracker _playerProgressTracker;
         private readonly LevelConfig _levelConfig;
@@ -19,7 +19,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         private readonly SymbolsSequenceGenerator _symbolsSequenceGenerator;
         private readonly InputStringReader _inputStringReader;
         private readonly SceneSwitcherService _sceneSwitcherService;
-        private readonly GameplayPlayerInputs _gameplayPlayerInputs;
         private readonly ICoroutinesPerformer _coroutinesPerformer;
         private readonly SaveLoadDataProvidersService _saveLoadDataProvidersService;
         private readonly GameplayInputArgs _inputArgs;
@@ -32,7 +31,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             SymbolsSequenceGenerator symbolsSequenceGenerator,
             InputStringReader inputStringReader,
             SceneSwitcherService sceneSwitcherService,
-            GameplayPlayerInputs gameplayPlayerInputs, 
             ICoroutinesPerformer coroutinesPerformer,
             SaveLoadDataProvidersService saveLoadDataProvidersService,
             ProjectPopupService popupService,
@@ -44,7 +42,6 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
             _symbolsSequenceGenerator = symbolsSequenceGenerator;
             _inputStringReader = inputStringReader;
             _sceneSwitcherService = sceneSwitcherService;
-            _gameplayPlayerInputs = gameplayPlayerInputs;
             _coroutinesPerformer = coroutinesPerformer;
             _saveLoadDataProvidersService = saveLoadDataProvidersService;
             _popupService = popupService;
@@ -67,9 +64,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
         private void ProcessWin()
         {
-            _popupService.OpenInfoPopup("You win");
-
-            _gameplayPlayerInputs.EndGameKeyDown += OnMainMenuReturn;
+            _popupService.OpenInfoPopup("You win", OnMainMenuReturn);
 
             _playerProgressTracker.AddWin();
             _walletService.Add(_levelConfig.WinGoldAmount);
@@ -77,9 +72,7 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
         private void ProcessDefeat()
         {
-            _popupService.OpenInfoPopup("You lose");
-
-            _gameplayPlayerInputs.EndGameKeyDown += OnRestartGame;
+            _popupService.OpenInfoPopup("You lose", OnRestartGame);
 
             _playerProgressTracker.AddLoss();
 
@@ -91,13 +84,11 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
 
         private void OnMainMenuReturn()
         {
-            UnsubscribeAll();
             _coroutinesPerformer.StartPerform(ReturnToMainMenu());
         }
 
         private void OnRestartGame()
         {
-            UnsubscribeAll();
             _coroutinesPerformer.StartPerform(Start());
         }
 
@@ -105,13 +96,5 @@ namespace _Project.Develop.Runtime.Gameplay.Infrastructure
         {
             yield return _sceneSwitcherService.ProcessSwitchTo(Scenes.MainMenu);
         }
-
-        private void UnsubscribeAll()
-        {
-            _gameplayPlayerInputs.EndGameKeyDown -= OnMainMenuReturn;
-            _gameplayPlayerInputs.EndGameKeyDown -= OnRestartGame;
-        }
-
-        public void Dispose() => UnsubscribeAll();
     }
 }

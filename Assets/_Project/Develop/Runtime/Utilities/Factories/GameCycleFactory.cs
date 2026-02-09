@@ -29,7 +29,6 @@ namespace _Project.Develop.Runtime.Utilities.Factories
             SymbolsSequenceGenerator symbolsSequenceGenerator = _container.Resolve<SymbolsSequenceGenerator>();
             InputStringReader inputStringReader = _container.Resolve<InputStringReader>();
             SceneSwitcherService sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
-            GameplayPlayerInputs gameplayPlayerInputs = _container.Resolve<GameplayPlayerInputs>();
             ICoroutinesPerformer coroutinesPerformer = _container.Resolve<ICoroutinesPerformer>();
             SaveLoadDataProvidersService saveLoadDataProvidersService = _container.Resolve<SaveLoadDataProvidersService>();
             ProjectPopupService popupService = _container.Resolve<ProjectPopupService>();
@@ -41,7 +40,6 @@ namespace _Project.Develop.Runtime.Utilities.Factories
                 symbolsSequenceGenerator,
                 inputStringReader,
                 sceneSwitcherService,
-                gameplayPlayerInputs,
                 coroutinesPerformer,
                 saveLoadDataProvidersService,
                 popupService,
